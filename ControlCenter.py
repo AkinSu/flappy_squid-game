@@ -6,6 +6,7 @@ from pygame import mixer
 
 pygame.init()
 
+Charecter = random.randint(0,1)
 clock = pygame.time.Clock()
 fps = 60
 
@@ -30,6 +31,8 @@ pipe_freq = 1000 #milli secs
 last_pipe = pygame.time.get_ticks() - pipe_freq
 score = 0
 pass_pipe = False
+step_count = 1
+
 
 # background images
 bg_image = pygame.image.load('assets/BG.png')
@@ -37,7 +40,6 @@ bg_image_floor = pygame.image.load('assets/BG_floor.png')
 button_image = pygame.image.load('assets/restart.png')
 
 # sounds
-flap_sfx = pygame.mixer.Sound('assets/step1.mp3')
 death_sfx = pygame.mixer.Sound('assets/Spongebob_Fail_Sound.mp3')
 
 # collision detection
@@ -64,7 +66,10 @@ class Bird(pygame.sprite.Sprite):
         self.index = 0
         self.counter = 0
         for nums in range(1, 4):
-            img = pygame.image.load(f'assets/UGbird{nums}.png')
+            if Charecter == 1:
+                img = pygame.image.load(f'assets/UGbird{nums}.png')
+            elif Charecter == 0:
+                img = pygame.image.load(f'assets/bird{nums}.png')
             self.images.append(img)
         self.image = self.images[self.index]
         self.rect =self.image.get_rect()
@@ -159,7 +164,12 @@ while running:
     display.fill((0, 0, 0))
 
     display.blit(bg_image, (0, 0))
-
+    # flapping sound
+    if(is_jumping):
+        step_count += 1
+        if step_count > 2:
+            step_count = 1
+    flap_sfx = pygame.mixer.Sound(f'assets/step{step_count}.mp3')
     bird_group.draw(display)
     bird_group.update()
     pipe_group.draw(display)
