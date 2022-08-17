@@ -26,8 +26,8 @@ scroll_speed = 7
 is_jumping = False
 flying = False
 game_over = False
-pipe_gap = 170   
-pipe_freq = 1000 #milli secs
+pipe_gap = 170
+pipe_freq = 1000 #milli secs 
 last_pipe = pygame.time.get_ticks() - pipe_freq
 score = 0
 pass_pipe = False
@@ -47,10 +47,14 @@ death_sfx = pygame.mixer.Sound('assets/Spongebob_Fail_Sound.mp3')
 #     if pipe_x >= 
 
 def reset_game():
+    scroll_speed = 7
     pipe_group.empty()
     flappy.rect.x = 100
     flappy.rect.y = int(screen_height / 2)
-    game_over = False
+    gameq_over = False
+    flying = False 
+    is_jumping = False
+    #Bird.image = pygame.transform.rotate(0,0)
     score = 0
     return score
 
@@ -175,7 +179,7 @@ while running:
     pipe_group.draw(display)
 
     
-    scroll_speed += score * 0.000001
+    scroll_speed += score * 0.0009
 
     # draw ground
     display.blit(bg_image_floor, (floor_scroll, 0))
@@ -222,6 +226,7 @@ while running:
         if button.draw() == True:
             game_over == False
             score = reset_game()
+    
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
